@@ -53,7 +53,7 @@ public class SerialParameters
   }
 
   /**
-   * Paramaterized constructer.
+   * Parameterized constructor.
    * 
    * @param portName The name of the port.
    * @param baudRate The baud rate.
