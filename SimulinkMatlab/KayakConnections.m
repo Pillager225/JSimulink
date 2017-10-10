@@ -1,4 +1,4 @@
-classdef decabot < matlab.System & matlab.system.mixin.Propagates
+classdef KayakConnections < matlab.System & matlab.system.mixin.Propagates
 
     properties(Logical, Nontunable)
         debug = false;
