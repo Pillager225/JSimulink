@@ -116,8 +116,10 @@ classdef decabot < matlab.System & matlab.system.mixin.Propagates
 			end
         end
 
-        function releaseImpl(obj) % TODO
-            
+        function releaseImpl(obj)
+            obj.pixhawkConn.closeConnections();
+            obj.mDTConn.closeConnections();
+            obj.mDTConn.closeConnections();
         end
     end
 end
