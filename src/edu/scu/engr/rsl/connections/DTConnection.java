@@ -8,6 +8,7 @@ import com.rbnb.sapi.Source;
 /**
  * This class provides a connection to DataTurbine.
  * It supports subscribing to only one channel and publishing to a single channel.
+ * Publishing and subscribing is required.
  * 
  * @author Ryan Cooper (ryanloringcooper@gmail.com)
  * @date September 19th, 2017

@@ -44,6 +44,12 @@ public class SerialToDT extends ThreadedDTConnection implements SerialPortEventL
 		start();
 	}
 	
+	/**
+	 * Sets up the serial connection on the specified port at the specified baud rate.
+	 * This is initially defined in ThreadedDTConnection
+	 * @param port
+	 * @param baud
+	 */
 	protected void setupSerialPort(String port, int baud) {
 		System.loadLibrary("win32com");
 		SerialParameters serialParameters = new SerialParameters(port, baud, SerialPort.FLOWCONTROL_NONE, SerialPort.FLOWCONTROL_NONE, databits, stop, parity);
@@ -161,12 +167,22 @@ public class SerialToDT extends ThreadedDTConnection implements SerialPortEventL
 		return null;
 	}
 	
+	/**
+	 * Sets up the necessary streams for this application to pipe data to and from
+	 * DataTurbine to the serial connection.
+	 * This is initially defined in ThreadedDTConnection.
+	 */
 	@Override
 	protected void setupStreams() throws IOException {
 		oStream = serialPort.getOutputStream();
 		iStream = serialPort.getInputStream();	
 	}
 	
+	/**
+	 * This cleans up the serial connection and does what the parent class does.
+	 * This is initially defined in DTConnection, but is overriden in 
+	 * ThreadedDTConnection.
+	 */
 	@Override
 	protected void exitGracefully() {
 		super.exitGracefully();

@@ -32,9 +32,17 @@ public abstract class ThreadedDTConnection extends DTConnection {
 		super(dthostname, sourceName, subscriptionHandle, debug);
 	}
 	
+	/** 
+	 * This is called in start and is required to be implemented in a child class.
+	 * 
+	 * @throws IOException
+	 */
 	protected abstract void setupStreams() throws IOException;
 	
-	protected void start() {
+	/**
+	 * Begins the communication over streams to and from DataTurbine
+	 */
+	protected void start() { 
 		try {
 			setupStreams();
 		} catch (IOException e1) {
@@ -68,7 +76,8 @@ public abstract class ThreadedDTConnection extends DTConnection {
 		};
 	}
 	
-	/** if a child class needs something special (like a connection driven by callbacks)
+	/** 
+	 * If a child class needs something special (like a connection driven by callbacks)
 	 * then this should be overridden. See SerialToDT for an example.
 	 */
 	protected Thread sourceThread() {
@@ -95,11 +104,21 @@ public abstract class ThreadedDTConnection extends DTConnection {
 		};
 	}
 	
+	/**
+	 * Since the threads could have been redefined in a child class, the threads are
+	 * actually set here to allow for the redefinitions to take effect.
+	 */
 	protected void setupThreads() {
 		sinkThread = sinkThread();
 		sourceThread = sourceThread();
 	}
 	
+	/**
+	 * Will only start the threads if they are not null. This is important because
+	 * if a child process wants to disable one of the threads because it is handling
+	 * the source or sink differently, then it will set one of the threads to null.
+	 * See SerialToDT for an example.
+	 */
 	protected void startThreads() {
 		if(sinkThread != null) {
 			sinkThread.start();
@@ -109,6 +128,11 @@ public abstract class ThreadedDTConnection extends DTConnection {
 		}
 	}
 	
+	/**
+	 * Will wait for the threads to finish executing before moving on.
+	 * 
+	 * @throws InterruptedException
+	 */
 	protected void waitForThreads() throws InterruptedException {
 		if(sinkThread != null) {
 			sinkThread.join();
@@ -118,6 +142,11 @@ public abstract class ThreadedDTConnection extends DTConnection {
 		}
 	}
 	
+	/**
+	 * If there is a valid stream open, close it.
+	 * 
+	 * @throws IOException
+	 */
 	protected void closeStreams() throws IOException {
 		if(oStream != null) {
 			oStream.close();
@@ -127,6 +156,9 @@ public abstract class ThreadedDTConnection extends DTConnection {
 		}
 	}
 	
+	/** 
+	 * Will attempt to end the threads in a respectful manner.
+	 */
 	protected void interruptThreads() {
 		if(sinkThread != null) {
 			sinkThread.interrupt();
@@ -142,6 +174,11 @@ public abstract class ThreadedDTConnection extends DTConnection {
 		}
 	}
 	
+	/**
+	 * This will clean up the threads and close the streams in addtion to doing what
+	 * the parent class does.
+	 * This is initially defined in DTConnection.
+	 */
 	@Override
 	protected void exitGracefully() {
 		interruptThreads();

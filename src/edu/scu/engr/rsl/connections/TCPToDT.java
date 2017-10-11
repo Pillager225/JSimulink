@@ -29,6 +29,13 @@ public class TCPToDT extends ThreadedDTConnection {
 		start();
 	}
 	
+	/**
+	 * Sets up a client TCP socket connection on the specified IPv4 address and port. 
+	 * A TCP server shoudl be listening on the specified ipaddr and port.
+	 * 
+	 * @param ipaddr the ip address of the device that TCP server is listening on
+	 * @param port the port that the TCP server is listening on
+	 */
 	protected void setupSock(String ipaddr, int port) {
 		try {
 			sock = new Socket(ipaddr, port);
@@ -39,12 +46,22 @@ public class TCPToDT extends ThreadedDTConnection {
 		}
 	}
 	
+	/**
+	 * Sets up the necessary streams for this application to pipe data to and from
+	 * DataTurbine to the TCP connection.
+	 * This is initially defined in ThreadedDTConnection.
+	 */
 	@Override
 	protected void setupStreams() throws IOException {
 		oStream = sock.getOutputStream();
 		iStream = sock.getInputStream();	
 	}
 	
+	/**
+	 * This cleans up the socket connection and does what the parent class does.
+	 * This is initially defined in DTConnection, but is overriden in 
+	 * ThreadedDTConnection.
+	 */
 	@Override
 	protected void exitGracefully() {
 		super.exitGracefully();
